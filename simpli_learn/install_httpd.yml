@@ -1,0 +1,26 @@
+---
+
+- name: sample book
+  hosts: ansible_client
+  remote_user: root
+  become: yes
+  tasks:
+    
+    - name: install httpd
+      yum:
+        name: httpd
+        state: latest
+
+    - name: run httpd
+      service:
+        name: httpd
+        state: started
+      register: service_out
+
+    - debug:
+        msg: "{{ service_out.state  }}"
+
+    - name: create content
+      copy:
+        content: "congrats on installing ansible"
+        dest: /var/www/html/index.html
